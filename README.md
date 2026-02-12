@@ -155,6 +155,12 @@ KlotskiGame.getState();
 14. 纵横交错 (78步)
 15. 四面楚歌 (100步)
 
+## 运行效果展示
+
+![通关界面](./assets/images/1.png)
+
+![自动求解](./assets/images/2.png)
+
 ## 浏览器兼容性
 
 - Chrome 60+
