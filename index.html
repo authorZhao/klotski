@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>华容道 - 经典益智游戏</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- 主菜单 -->
+        <div id="menu-screen" class="screen active">
+            <h1 class="game-title">华容道</h1>
+            <p class="game-subtitle">经典益智游戏</p>
+            <div class="menu-buttons">
+                <button id="btn-start" class="menu-btn">开始游戏</button>
+                <button id="btn-select" class="menu-btn">选择关卡</button>
+                <button id="btn-help" class="menu-btn">游戏说明</button>
+            </div>
+        </div>
+
+        <!-- 选关界面 -->
+        <div id="level-screen" class="screen">
+            <h2>选择关卡</h2>
+            <div id="level-grid" class="level-grid">
+                <!-- 关卡按钮由JS生成 -->
+            </div>
+            <button id="btn-back-menu" class="back-btn">返回菜单</button>
+        </div>
+
+        <!-- 游戏界面 -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="level-info">
+                    <span id="current-level-name">横刀立马</span>
+                    <span class="difficulty" id="current-difficulty"></span>
+                </div>
+                <div class="game-stats">
+                    <span>步数: <span id="move-count">0</span></span>
+                    <span>最少: <span id="min-steps">81</span>步</span>
+                </div>
+            </div>
+
+            <!-- 解法提示面板 -->
+            <div id="hint-panel" class="hint-panel" style="display: none;">
+                <div class="hint-content">
+                    <span class="hint-label">下一步:</span>
+                    <span id="hint-text" class="hint-text"></span>
+                    <span id="hint-progress" class="hint-progress"></span>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <div id="game-board" class="board">
+                    <!-- 棋盘由JS渲染 -->
+                </div>
+                <canvas id="effects-canvas" class="effects-canvas"></canvas>
+            </div>
+
+            <div class="game-controls">
+                <button id="btn-restart" class="control-btn">重新开始</button>
+                <button id="btn-undo" class="control-btn">撤销</button>
+                <button id="btn-back-levels" class="control-btn">选关</button>
+            </div>
+
+            <!-- 解法控制按钮 -->
+            <div class="solver-controls">
+                <button id="btn-solve" class="solver-btn">求解</button>
+                <button id="btn-hint" class="solver-btn" disabled>提示</button>
+                <button id="btn-auto" class="solver-btn" disabled>自动还原</button>
+                <button id="btn-stop" class="solver-btn stop-btn" style="display:none;">停止</button>
+            </div>
+
+            <div class="control-hint">
+                <p>鼠标: 点击选中棋子，再点击方向移动</p>
+                <p>键盘: 点击选中棋子后，用 WASD 或 方向键 移动</p>
+            </div>
+        </div>
+
+        <!-- 过关界面 -->
+        <div id="win-screen" class="screen">
+            <div class="win-content">
+                <h2 class="win-title">恭喜过关!</h2>
+                <div class="win-stats">
+                    <p>关卡: <span id="win-level-name"></span></p>
+                    <p>用时步数: <span id="win-moves"></span>步</p>
+                    <p>最少步数: <span id="win-min-steps"></span>步</p>
+                    <p id="win-rating" class="rating"></p>
+                </div>
+                <div class="win-buttons">
+                    <button id="btn-next-level" class="menu-btn">下一关</button>
+                    <button id="btn-replay" class="control-btn">重玩本关</button>
+                    <button id="btn-back-to-levels" class="control-btn">选关</button>
+                </div>
+            </div>
+            <canvas id="celebration-canvas" class="celebration-canvas"></canvas>
+        </div>
+
+        <!-- 帮助界面 -->
+        <div id="help-screen" class="screen">
+            <div class="help-content">
+                <h2>游戏说明</h2>
+                <div class="help-section">
+                    <h3>目标</h3>
+                    <p>将<span class="cao-text">曹操</span>（红色大方块）移动到棋盘底部中央的出口处。</p>
+                </div>
+                <div class="help-section">
+                    <h3>棋子介绍</h3>
+                    <ul class="piece-list">
+                        <li><span class="piece-demo cao"></span> 曹操 (2x2) - 需要移到出口</li>
+                        <li><span class="piece-demo guan"></span> 关羽 (2x1) - 横向</li>
+                        <li><span class="piece-demo jiang"></span> 武将 (1x2) - 纵向</li>
+                        <li><span class="piece-demo bing"></span> 小兵 (1x1)</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h3>操作方式</h3>
+                    <ul>
+                        <li><strong>鼠标:</strong> 点击选中棋子，再点击空位方向移动</li>
+                        <li><strong>键盘:</strong> 选中棋子后，用 WASD 或 方向键 移动</li>
+                        <li><strong>触摸:</strong> 点击选中，再点击方向移动</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h3>规则</h3>
+                    <ul>
+                        <li>棋子只能沿直线滑动</li>
+                        <li>不能跨越或重叠其他棋子</li>
+                        <li>曹操从底部中央出口逃脱即为胜利</li>
+                    </ul>
+                </div>
+            </div>
+            <button id="btn-back-from-help" class="back-btn">返回菜单</button>
+        </div>
+    </div>
+
+    <!-- 音频控制 -->
+    <div id="audio-control">
+        <button id="btn-mute" class="mute-btn" title="静音/取消静音">
+            <span class="sound-on">🔊</span>
+            <span class="sound-off" style="display:none">🔇</span>
+        </button>
+    </div>
+
+    <!-- 加载JS文件 -->
+    <script src="js/levels.js"></script>
+    <script src="js/piece.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/solver.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
